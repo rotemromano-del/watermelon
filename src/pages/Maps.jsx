@@ -2,6 +2,7 @@ import { useState } from 'react'
 import BottomNav from '../components/BottomNav'
 import FieldMap from '../components/FieldMap'
 import { ABEND_FEMALE_MAP, MALES_700_MAP } from '../data/fieldMaps'
+import LockButton from '../components/LockButton'
 
 // Compute planted area in dunam from a field map
 function plantedDunam(map) {
@@ -43,6 +44,7 @@ export default function Maps() {
             d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 9m0 8V9m0 0L9 7" />
         </svg>
         <span className="font-bold text-lg">Maps</span>
+        <LockButton />
       </header>
 
       {/* Sub-tabs */}

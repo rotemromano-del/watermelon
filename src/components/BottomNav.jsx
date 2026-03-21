@@ -55,7 +55,6 @@ const NAV_ITEMS = [
 export default function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
-
   return (
     <nav className="bottom-nav">
       <div className="flex items-stretch">

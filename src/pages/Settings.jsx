@@ -1,4 +1,5 @@
 import BottomNav from '../components/BottomNav'
+import LockButton from '../components/LockButton'
 
 export default function Settings() {
   return (
@@ -10,6 +11,7 @@ export default function Settings() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
         <span className="font-bold text-lg">Settings</span>
+        <LockButton />
       </header>
 
       <main className="page-content flex flex-col items-center justify-center text-center gap-4 py-16">

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import BottomNav from '../components/BottomNav'
+import LockButton from '../components/LockButton'
 import ColorEntry from '../components/ColorEntry'
 import PhotoUpload from '../components/PhotoUpload'
 
@@ -153,6 +154,7 @@ export default function PollinationsReport() {
             <circle cx="12" cy="12" r="3" />
           </svg>
           <span className="font-bold text-lg tracking-wide">Pollinations Report</span>
+          <LockButton />
         </header>
 
         <main className="page-content flex flex-col items-center justify-center text-center gap-6 py-12">

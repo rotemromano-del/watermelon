@@ -3,9 +3,11 @@ import PollinationsReport from './pages/PollinationsReport'
 import History from './pages/History'
 import Maps from './pages/Maps'
 import Settings from './pages/Settings'
+import { AdminProvider } from './AdminContext'
 
 export default function App() {
   return (
+    <AdminProvider>
     <Routes>
       <Route path="/" element={<Navigate to="/report" replace />} />
       <Route path="/report" element={<PollinationsReport />} />
@@ -13,5 +15,6 @@ export default function App() {
       <Route path="/maps" element={<Maps />} />
       <Route path="/settings" element={<Settings />} />
     </Routes>
+    </AdminProvider>
   )
 }

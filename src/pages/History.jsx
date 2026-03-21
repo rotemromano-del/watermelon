@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import BottomNav from '../components/BottomNav'
+import LockButton from '../components/LockButton'
 
 const VARIETY_TABS = [
   { id: '089',  label: '089'  },
@@ -20,6 +21,7 @@ export default function History() {
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span className="font-bold text-lg">History</span>
+        <LockButton />
       </header>
 
       {/* Sub-tabs */}
