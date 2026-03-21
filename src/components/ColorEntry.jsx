@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { formatParent } from '../data/varieties'
+import { getFemaleBedIds } from '../data/fieldMaps'
 
 const COLORS = [
   'Yellow',
@@ -135,15 +136,38 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
             <label className="field-label">
               Line <span className="text-red-400">*</span>
             </label>
-            <input
-              type="number"
-              inputMode="numeric"
-              min="0"
-              value={entry.lines}
-              onChange={(e) => handleChange('lines', e.target.value)}
-              placeholder="0"
-              className={`field-input ${errors?.lines ? 'border-red-400 ring-1 ring-red-400' : ''}`}
-            />
+            {(() => {
+              const varietyNo = COLOR_VARIETY[entry.color]
+              const bedIds = varietyNo ? getFemaleBedIds(varietyNo) : []
+              return bedIds.length > 0 ? (
+                <div className="relative">
+                  <select
+                    value={entry.lines}
+                    onChange={(e) => handleChange('lines', e.target.value)}
+                    className={`field-input pr-10 ${errors?.lines ? 'border-red-400 ring-1 ring-red-400' : ''}`}
+                  >
+                    <option value="">Select...</option>
+                    {bedIds.map(id => (
+                      <option key={id} value={id}>{id}</option>
+                    ))}
+                  </select>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              ) : (
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="0"
+                  value={entry.lines}
+                  onChange={(e) => handleChange('lines', e.target.value)}
+                  placeholder="0"
+                  className={`field-input ${errors?.lines ? 'border-red-400 ring-1 ring-red-400' : ''}`}
+                />
+              )
+            })()}
             {errors?.lines && <p className="error-text">{errors.lines}</p>}
           </div>
 

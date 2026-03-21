@@ -3,6 +3,7 @@ import BottomNav from '../components/BottomNav'
 import FieldMap from '../components/FieldMap'
 import { ABEND_FEMALE_MAP, MALES_700_MAP } from '../data/fieldMaps'
 import LockButton from '../components/LockButton'
+import { useAdmin } from '../AdminContext'
 
 // Compute planted area in dunam from a field map
 function plantedDunam(map) {
@@ -35,6 +36,8 @@ const TABS = [
 
 export default function Maps() {
   const [activeTab, setActiveTab] = useState('abend')
+  const { isAdmin } = useAdmin()
+  const visibleTabs = TABS.filter(t => t.id !== 'data' || isAdmin)
 
   return (
     <div className="app-shell">
@@ -49,7 +52,7 @@ export default function Maps() {
 
       {/* Sub-tabs */}
       <div className="flex border-b border-slate-200 bg-white">
-        {TABS.map((tab) => (
+        {visibleTabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}

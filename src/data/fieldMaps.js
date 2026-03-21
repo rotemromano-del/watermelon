@@ -132,3 +132,16 @@ export const ABEND_FEMALE_MAP = {
     },
   ],
 }
+
+// Returns sorted bed IDs from female maps that are planted with the given varietyNo
+export function getFemaleBedIds(varietyNo) {
+  const ids = []
+  for (const map of [ABEND_FEMALE_MAP]) {
+    for (const group of map.bedGroups) {
+      for (const bed of group.beds) {
+        if (bed.color && bed.varietyNo === varietyNo) ids.push(bed.id)
+      }
+    }
+  }
+  return ids.sort((a, b) => a - b)
+}
