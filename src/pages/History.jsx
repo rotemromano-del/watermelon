@@ -131,6 +131,7 @@ export default function History() {
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wide">
                     <th className="text-left py-2 pr-3">Date</th>
+                    <th className="text-left py-2 pr-3">Time</th>
                     <th className="text-left py-2 pr-3">Employee</th>
                     <th className="text-left py-2 pr-3">Variety</th>
                     <th className="text-right py-2 pr-3">Line</th>
@@ -146,9 +147,11 @@ export default function History() {
                     return (
                       <tr key={key} className="border-b border-slate-100">
                         <td className="py-2 pr-3 text-slate-700">{s.date}</td>
+                        <td className="py-2 pr-3 text-slate-500 text-xs">{new Date(s.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                         <td className="py-2 pr-3 text-slate-700">{s.employeeName}</td>
                         {isEditing ? (
                           <>
+                            <td className="py-1 pr-3 text-slate-500 text-xs">{new Date(s.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                             <td className="py-1 pr-3"><input className="field-input py-1 px-2 text-sm w-24" value={editValues.employee} onChange={ev => setEditValues(v => ({ ...v, employee: ev.target.value }))} /></td>
                             <td className="py-1 pr-3"><input className="field-input py-1 px-2 text-sm w-24" value={editValues.variety} onChange={ev => setEditValues(v => ({ ...v, variety: ev.target.value }))} /></td>
                             <td className="py-1 pr-3 text-right"><input className="field-input py-1 px-2 text-sm w-16 text-right" value={editValues.line} onChange={ev => setEditValues(v => ({ ...v, line: ev.target.value }))} /></td>
