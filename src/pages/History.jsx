@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import * as XLSX from 'xlsx'
 import BottomNav from '../components/BottomNav'
 import LockButton from '../components/LockButton'
 import { useAdmin } from '../AdminContext'
@@ -9,6 +10,7 @@ const VARIETY_TABS = [
   { id: '318',     label: '318'      },
   { id: '323A',    label: '323A'     },
   { id: '337',     label: '337'      },
+  { id: '2088S',   label: '2088S'    },
   { id: 'rawdata', label: 'Raw Data' },
 ]
 
@@ -96,7 +98,35 @@ export default function History() {
 
           return (
             <div className="card" style={{ overflowX: 'auto' }}>
-              <p className="section-title mb-4">Raw Submissions</p>
+              <div className="flex items-center justify-between mb-4">
+                <p className="section-title">Raw Submissions</p>
+                {isAdmin && (
+                  <button
+                    onClick={() => {
+                      const rows = submissions.flatMap(s =>
+                        s.colorEntries.map(e => ({
+                          Date: s.date,
+                          Employee: s.employeeName,
+                          Variety: e.color,
+                          Line: e.lines,
+                          Pollinations: e.pollinations,
+                          'Submitted At': new Date(s.submittedAt).toLocaleString(),
+                        }))
+                      )
+                      const ws = XLSX.utils.json_to_sheet(rows)
+                      const wb = XLSX.utils.book_new()
+                      XLSX.utils.book_append_sheet(wb, ws, 'Submissions')
+                      XLSX.writeFile(wb, 'pollinations_data.xlsx')
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-semibold"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                    Export Excel
+                  </button>
+                )}
+              </div>
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wide">

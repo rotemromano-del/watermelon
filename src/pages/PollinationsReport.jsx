@@ -39,7 +39,7 @@ function createColorEntry() {
 
 function buildInitialState() {
   return {
-    employeeName: '',
+    employeeName: localStorage.getItem('lastEmployeeName') || '',
     date: getTodayDate(),
     colorEntries: [createColorEntry()],
     photos: [],
@@ -254,6 +254,7 @@ export default function PollinationsReport() {
                     } else {
                       setAddingName(false)
                       setForm((f) => ({ ...f, employeeName: e.target.value }))
+                      localStorage.setItem('lastEmployeeName', e.target.value)
                       setErrors((prev) => ({ ...prev, employeeName: null }))
                     }
                   }}

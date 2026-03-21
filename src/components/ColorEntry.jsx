@@ -8,6 +8,7 @@ const COLORS = [
   'Blue',
   'Brown',
   'Peach',
+  'Green',
 ]
 
 const COLOR_VARIETY = {
@@ -16,6 +17,11 @@ const COLOR_VARIETY = {
   Purple: '2048',
   Yellow: '2210',
   Peach: '2247',
+  Green: '2088',
+}
+
+const COLOR_LABEL = {
+  Green: '2088S',
 }
 
 const COLOR_STYLE = {
@@ -24,6 +30,7 @@ const COLOR_STYLE = {
   Blue:   { bg: '#3B82F6', text: '#ffffff' },
   Brown:  { bg: '#92400E', text: '#ffffff' },
   Peach:  { bg: '#FBCBA7', text: '#7C2D12' },
+  Green:  { bg: '#4ADE80', text: '#14532D' },
 }
 
 function ColorPicker({ value, onChange, hasError }) {
@@ -39,7 +46,7 @@ function ColorPicker({ value, onChange, hasError }) {
   }, [])
 
   const selected = value ? COLOR_STYLE[value] : null
-  const selectedLabel = value ? formatParent(COLOR_VARIETY[value]) : null
+  const selectedLabel = value ? (COLOR_LABEL[value] ?? formatParent(COLOR_VARIETY[value])) : null
 
   return (
     <div ref={ref} className="relative">
@@ -75,7 +82,7 @@ function ColorPicker({ value, onChange, hasError }) {
                 className="w-full text-left px-4 py-3 font-medium text-sm flex items-center gap-2 transition-opacity active:opacity-70"
                 style={{ backgroundColor: style.bg, color: style.text }}
               >
-                {formatParent(COLOR_VARIETY[c])}
+                {COLOR_LABEL[c] ?? formatParent(COLOR_VARIETY[c])}
               </button>
             )
           })}
