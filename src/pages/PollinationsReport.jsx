@@ -100,18 +100,25 @@ export default function PollinationsReport() {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
 
     if (Object.keys(errs).length) {
       setErrors(errs)
-      // Scroll to top so user sees first error
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
 
-    // Log to console
+    // Convert photos to base64 for persistence
+    const photosWithData = await Promise.all(form.photos.map((p) =>
+      new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve({ dataUrl: reader.result, description: p.description, fileName: p.file.name })
+        reader.readAsDataURL(p.file)
+      })
+    ))
+
     const reportData = {
       employeeName: form.employeeName,
       date: form.date,
@@ -120,15 +127,15 @@ export default function PollinationsReport() {
         lines: Number(e.lines),
         pollinations: Number(e.pollinations),
       })),
-      photos: form.photos.map((p) => ({
-        fileName: p.file.name,
-        description: p.description,
-      })),
+      photos: photosWithData,
       submittedAt: new Date().toISOString(),
     }
 
     console.log('=== POLLINATIONS REPORT SUBMITTED ===')
-    console.log(JSON.stringify(reportData, null, 2))
+    console.log(JSON.stringify({ ...reportData, photos: `[${photosWithData.length} photos]` }, null, 2))
+
+    const existing = JSON.parse(localStorage.getItem('submissions') || '[]')
+    localStorage.setItem('submissions', JSON.stringify([...existing, reportData]))
 
     setSubmitted(true)
   }
