@@ -1,4 +1,18 @@
-<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'>
-  <rect width='512' height='512' rx='260' fill='#16a34a'/>
-  <text x='256' y='340' font-size='100' text-anchor='middle' font-family='serif'>🌱</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#15803d"/>
+  <!-- red flesh -->
+  <path d="M 96 290 A 160 160 0 0 1 416 290 Z" fill="#dc2626"/>
+  <!-- white rind -->
+  <path d="M 96 290 A 160 160 0 0 1 416 290 L 406 305 A 150 150 0 0 0 106 305 Z" fill="#f0fdf4"/>
+  <!-- green rind -->
+  <path d="M 106 305 A 150 150 0 0 1 406 305 L 416 320 A 160 160 0 0 0 96 320 Z" fill="#16a34a"/>
+  <!-- seeds -->
+  <ellipse cx="208" cy="262" rx="11" ry="16" fill="#111" transform="rotate(-20 208 262)"/>
+  <ellipse cx="256" cy="250" rx="11" ry="16" fill="#111"/>
+  <ellipse cx="304" cy="262" rx="11" ry="16" fill="#111" transform="rotate(20 304 262)"/>
+  <ellipse cx="232" cy="280" rx="10" ry="15" fill="#111" transform="rotate(-10 232 280)"/>
+  <ellipse cx="280" cy="280" rx="10" ry="15" fill="#111" transform="rotate(10 280 280)"/>
+  <!-- stem -->
+  <path d="M 256 128 Q 280 106 290 80" stroke="#15803d" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M 256 128 Q 230 104 220 76" stroke="#15803d" stroke-width="9" fill="none" stroke-linecap="round"/>
 </svg>
