@@ -231,7 +231,7 @@ export default function PollinationsReport() {
 
       {/* Scrollable content */}
       <main className="page-content">
-        <form onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} noValidate onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault() }}>
 
           {/* ── Section: Employee Info ─────────────────────────────────── */}
           <div className="card">
