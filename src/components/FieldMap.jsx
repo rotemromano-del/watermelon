@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { formatParent } from '../data/varieties'
 
 const UNIT_W    = 34   // px per bed (1 column wide)
@@ -6,6 +7,7 @@ const GROUP_GAP = 12   // px gap between bed groups (alleys)
 const DIM_PAD   = 36   // px margin for dimension lines
 
 export default function FieldMap({ map }) {
+  const [tooltip, setTooltip] = useState(null)
   const { totalLengthM } = map
 
   const mToPx = (m) => (m / totalLengthM) * MAP_H
@@ -43,12 +45,8 @@ export default function FieldMap({ map }) {
   const shortTopY = MAP_H - mToPx(215)
 
   return (
-    <div>
-      <div className="flex gap-4 mb-4 text-xs text-slate-500">
-        <span>🌱 {map.area}</span>
-      </div>
-
-      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3"
+    <>
+<div className="rounded-xl border border-slate-200 bg-slate-50 p-3"
         style={{ overflowX: 'auto', overflowY: 'visible' }}>
         <svg width={svgWidth} height={MAP_H}
           style={{ display: 'block', overflow: 'visible' }}>
@@ -74,17 +72,19 @@ export default function FieldMap({ map }) {
             {map.lengthLong}
           </text>
 
-          {/* ── Right dimension line: 215m (short beds) ── */}
-          <line x1={dimLineX_right} y1={shortTopY + 4} x2={dimLineX_right} y2={MAP_H - 4}
-            stroke="#94a3b8" strokeWidth={1}
-            markerStart="url(#arr-up)" markerEnd="url(#arr)" />
-          <line x1={dimLineX_right - 4} y1={shortTopY} x2={dimLineX_right + 4} y2={shortTopY} stroke="#94a3b8" strokeWidth={1} />
-          <line x1={dimLineX_right - 4} y1={MAP_H}     x2={dimLineX_right + 4} y2={MAP_H}     stroke="#94a3b8" strokeWidth={1} />
-          <text x={dimLineX_right + 4} y={shortTopY + (MAP_H - shortTopY) / 2}
-            textAnchor="middle" fontSize={9} fontFamily="system-ui, sans-serif" fontWeight="600" fill="#64748b"
-            transform={`rotate(-90, ${dimLineX_right + 4}, ${shortTopY + (MAP_H - shortTopY) / 2})`}>
-            {map.lengthShort}
-          </text>
+          {/* ── Right dimension line: short beds (only if map has lengthShort) ── */}
+          {map.lengthShort && <>
+            <line x1={dimLineX_right} y1={shortTopY + 4} x2={dimLineX_right} y2={MAP_H - 4}
+              stroke="#94a3b8" strokeWidth={1}
+              markerStart="url(#arr-up)" markerEnd="url(#arr)" />
+            <line x1={dimLineX_right - 4} y1={shortTopY} x2={dimLineX_right + 4} y2={shortTopY} stroke="#94a3b8" strokeWidth={1} />
+            <line x1={dimLineX_right - 4} y1={MAP_H}     x2={dimLineX_right + 4} y2={MAP_H}     stroke="#94a3b8" strokeWidth={1} />
+            <text x={dimLineX_right + 4} y={shortTopY + (MAP_H - shortTopY) / 2}
+              textAnchor="middle" fontSize={9} fontFamily="system-ui, sans-serif" fontWeight="600" fill="#64748b"
+              transform={`rotate(-90, ${dimLineX_right + 4}, ${shortTopY + (MAP_H - shortTopY) / 2})`}>
+              {map.lengthShort}
+            </text>
+          </>}
 
           {/* ── Beds ── */}
           {laidOut.map((bed) => {
@@ -100,11 +100,13 @@ export default function FieldMap({ map }) {
                   return (
                     <rect
                       x={bed.x} y={fy} width={bed.w} height={fh}
-                      fill="#f8fafc"
-                      stroke="#cbd5e1"
+                      fill={bed.futureColor ?? '#f1f5f9'}
+                      stroke={bed.futureColor ? '#a16207' : '#cbd5e1'}
                       strokeWidth={1}
-                      strokeDasharray="3 2"
                       rx={3}
+                      style={bed.futureTooltip ? { cursor: 'pointer' } : {}}
+                      onMouseMove={bed.futureTooltip ? (e) => setTooltip({ x: e.clientX, y: e.clientY, text: bed.futureTooltip }) : undefined}
+                      onMouseLeave={bed.futureTooltip ? () => setTooltip(null) : undefined}
                     />
                   )
                 })()}
@@ -114,6 +116,9 @@ export default function FieldMap({ map }) {
                   stroke={planted ? '#a16207' : '#cbd5e1'}
                   strokeWidth={1}
                   rx={3}
+                  style={bed.tooltip ? { cursor: 'pointer' } : {}}
+                  onMouseMove={bed.tooltip ? (e) => setTooltip({ x: e.clientX, y: e.clientY, text: bed.tooltip }) : undefined}
+                  onMouseLeave={bed.tooltip ? () => setTooltip(null) : undefined}
                 />
                 {/* Bed number — bottom of bed */}
                 <text
@@ -158,6 +163,15 @@ export default function FieldMap({ map }) {
           </div>
         </div>
       )}
-    </div>
+
+      {tooltip && (
+        <div
+          style={{ position: 'fixed', left: tooltip.x + 12, top: tooltip.y + 12, pointerEvents: 'none', zIndex: 9999 }}
+          className="bg-slate-800 text-white text-xs rounded px-2 py-1 shadow-lg whitespace-nowrap"
+        >
+          {tooltip.text}
+        </div>
+      )}
+    </>
   )
 }
