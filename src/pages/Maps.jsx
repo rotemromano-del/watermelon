@@ -17,11 +17,11 @@ function plantedDunam(map) {
 }
 
 const VARIETIES = [
-  { code: '089',  femaleParent: '2024', maleParent: '2037', femaleMaps: [ABEND_FEMALE_MAP], maleMaps: [MALES_700_MAP] },
-  { code: '208',  femaleParent: '2048', maleParent: '2045', femaleMaps: [], maleMaps: [] },
-  { code: '318',  femaleParent: '2106', maleParent: '2177', femaleMaps: [], maleMaps: [] },
-  { code: '323A', femaleParent: '2088', maleParent: '2247', femaleMaps: [], maleMaps: [] },
-  { code: '337',  femaleParent: '2210', maleParent: '2309', femaleMaps: [], maleMaps: [] },
+  { code: '089',  femaleParent: '2024', maleParent: '2037', femalePlanned: 11.11, femaleMaps: [ABEND_FEMALE_MAP], maleMaps: [MALES_700_MAP] },
+  { code: '208',  femaleParent: '2048', maleParent: '2045', femalePlanned: 6.25,  femaleMaps: [], maleMaps: [] },
+  { code: '318',  femaleParent: '2106', maleParent: '2177', femalePlanned: 7.06,  femaleMaps: [], maleMaps: [] },
+  { code: '323A', femaleParent: '2088', maleParent: '2247', femalePlanned: 6.67,  femaleMaps: [], maleMaps: [] },
+  { code: '337',  femaleParent: '2210', maleParent: '2309', femalePlanned: 1.2,   femaleMaps: [], maleMaps: [] },
 ]
 
 const TABS = [
@@ -126,9 +126,9 @@ export default function Maps() {
                         <td className="py-3 pr-4 text-slate-500">{v.femaleParent}</td>
                         <td className="py-3 pr-4 text-slate-500">{v.maleParent}</td>
                         <td className="py-3 pr-4 text-right text-slate-700">{fmt(femaleArea)}</td>
-                        <td className="py-3 pr-4 text-right text-slate-300">—</td>
+                        <td className="py-3 pr-4 text-right text-slate-500">{v.femalePlanned.toFixed(2)}</td>
                         <td className="py-3 pr-4 text-right text-slate-700">{fmt(maleArea)}</td>
-                        <td className="py-3 text-right text-slate-300">—</td>
+                        <td className="py-3 text-right text-slate-500">{(v.femalePlanned / 3).toFixed(2)}</td>
                       </tr>
                     )
                   })}
