@@ -48,13 +48,12 @@ function buildInitialState() {
 
 export default function PollinationsReport() {
   const installPromptRef = useRef(null)
-  const [canInstall, setCanInstall] = useState(false)
+  const [showInstallGuide, setShowInstallGuide] = useState(false)
 
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault()
       installPromptRef.current = e
-      setCanInstall(true)
     }
     window.addEventListener('beforeinstallprompt', handler)
     return () => window.removeEventListener('beforeinstallprompt', handler)
@@ -65,8 +64,9 @@ export default function PollinationsReport() {
       installPromptRef.current.prompt()
       installPromptRef.current.userChoice.then(() => {
         installPromptRef.current = null
-        setCanInstall(false)
       })
+    } else {
+      setShowInstallGuide(true)
     }
   }
 
@@ -431,6 +431,23 @@ export default function PollinationsReport() {
       </main>
 
       <BottomNav />
+
+      {/* Install guide modal */}
+      {showInstallGuide && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center p-4" onClick={() => setShowInstallGuide(false)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <p className="font-bold text-lg mb-3 text-slate-800">Add to Home Screen</p>
+            <p className="text-slate-600 text-sm mb-2">1. Tap the <strong>⋮</strong> menu in Chrome</p>
+            <p className="text-slate-600 text-sm mb-4">2. Tap <strong>"Add to Home screen"</strong></p>
+            <button
+              className="w-full bg-primary-600 text-white rounded-xl py-3 font-semibold"
+              onClick={() => setShowInstallGuide(false)}
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
