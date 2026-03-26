@@ -101,7 +101,7 @@ export default function FieldMap({ map }) {
                     <rect
                       x={bed.x} y={fy} width={bed.w} height={fh}
                       fill={bed.futureColor ?? '#f1f5f9'}
-                      stroke={bed.futureColor ? '#a16207' : '#cbd5e1'}
+                      stroke={bed.futureColor === '#3B82F6' ? '#1d4ed8' : bed.futureColor ? '#a16207' : '#cbd5e1'}
                       strokeWidth={1}
                       rx={3}
                       style={bed.futureTooltip ? { cursor: 'pointer' } : {}}
@@ -113,7 +113,7 @@ export default function FieldMap({ map }) {
                 <rect
                   x={bed.x} y={bed.y} width={bed.w} height={bed.h}
                   fill={bed.color ?? '#f1f5f9'}
-                  stroke={planted ? '#a16207' : '#cbd5e1'}
+                  stroke={bed.color === '#3B82F6' ? '#1d4ed8' : planted ? '#a16207' : '#cbd5e1'}
                   strokeWidth={1}
                   rx={3}
                   style={bed.tooltip ? { cursor: 'pointer' } : {}}
