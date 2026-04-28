@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { formatParent } from '../data/varieties'
 
 const UNIT_W    = 34   // px per bed (1 column wide)
@@ -8,6 +8,10 @@ const DIM_PAD   = 36   // px margin for dimension lines
 
 export default function FieldMap({ map }) {
   const [tooltip, setTooltip] = useState(null)
+  const scrollRef = useRef(null)
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollLeft = scrollRef.current.scrollWidth
+  }, [])
   const { totalLengthM } = map
 
   const mToPx = (m) => (m / totalLengthM) * MAP_H
@@ -46,7 +50,7 @@ export default function FieldMap({ map }) {
 
   return (
     <>
-<div className="rounded-xl border border-slate-200 bg-slate-50 p-3"
+<div ref={scrollRef} className="rounded-xl border border-slate-200 bg-slate-50 p-3"
         style={{ overflowX: 'auto', overflowY: 'visible' }}>
         <svg width={svgWidth} height={MAP_H}
           style={{ display: 'block', overflow: 'visible' }}>
@@ -96,7 +100,7 @@ export default function FieldMap({ map }) {
                 {/* Future (unplanted) portion above the current bed */}
                 {bed.futureLengthM > 0 && (() => {
                   const fh = mToPx(bed.futureLengthM)
-                  const fy = bed.y - fh
+                  const fy = bed.futureAlignTop ? 0 : bed.y - fh
                   return (
                     <rect
                       x={bed.x} y={fy} width={bed.w} height={fh}
