@@ -152,7 +152,7 @@ export default function CoversReport() {
   if (submitted) {
     return (
       <div className="app-shell">
-        <header className="top-bar">
+        <header className="top-bar" style={{ backgroundColor: '#2563eb' }}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round"
               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -185,14 +185,14 @@ export default function CoversReport() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">{t('totalCovers')}</span>
-                <span className="font-semibold text-primary-700">
+                <span className="font-semibold text-blue-700">
                   {form.colorEntries.reduce((sum, e) => sum + Number(e.pollinations || 0), 0).toLocaleString()}
                 </span>
               </div>
             </div>
           </div>
 
-          <button type="button" onClick={handleNewReport} className="btn-primary">
+          <button type="button" onClick={handleNewReport} className="btn-covers">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
@@ -208,14 +208,14 @@ export default function CoversReport() {
   // ── Form ────────────────────────────────────────────────────────────────────
   return (
     <div className="app-shell">
-      <header className="top-bar">
+      <header className="top-bar" style={{ backgroundColor: '#2563eb' }}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-6 h-6 flex-shrink-0">
           <path strokeLinecap="round" strokeLinejoin="round"
             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
         <div className="flex-1">
           <p className="font-bold text-base leading-tight">{t('coversReport')}</p>
-          <p className="text-primary-200 text-xs">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+          <p className="text-blue-200 text-xs">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
         </div>
         <button
           type="button"
@@ -305,7 +305,7 @@ export default function CoversReport() {
                       setAddingName(false)
                       setNewNameInput('')
                     }}
-                    className="btn-primary px-4 py-3 w-auto rounded-xl text-sm"
+                    className="btn-covers px-4 py-3 w-auto rounded-xl text-sm"
                     style={{ minHeight: 52 }}
                   >
                     {t('add')}
@@ -349,7 +349,7 @@ export default function CoversReport() {
             </div>
           </div>
 
-          <button type="submit" className="btn-primary">
+          <button type="submit" className="btn-covers">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -373,7 +373,7 @@ export default function CoversReport() {
             <p className="font-bold text-lg mb-3 text-slate-800">{t('addToHomeScreen')}</p>
             <p className="text-slate-600 text-sm mb-2">{t('installStep1')}</p>
             <p className="text-slate-600 text-sm mb-4">{t('installStep2')}</p>
-            <button className="w-full bg-primary-600 text-white rounded-xl py-3 font-semibold" onClick={() => setShowInstallGuide(false)}>
+            <button className="w-full bg-blue-600 text-white rounded-xl py-3 font-semibold" onClick={() => setShowInstallGuide(false)}>
               {t('gotIt')}
             </button>
           </div>
