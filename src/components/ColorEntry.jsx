@@ -93,7 +93,7 @@ function ColorPicker({ value, onChange, hasError, t }) {
   )
 }
 
-export default function ColorEntry({ entry, index, totalEntries, errors, onChange, onRemove }) {
+export default function ColorEntry({ entry, index, totalEntries, errors, onChange, onRemove, pollinationsLabel }) {
   const { t } = useLang()
   const handleChange = (field, value) => {
     if (field === 'color') {
@@ -183,7 +183,7 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
 
           <div>
             <label className="field-label">
-              {t('pollinations')} <span className="text-red-400">*</span>
+              {pollinationsLabel ?? t('pollinations')} <span className="text-red-400">*</span>
             </label>
             <input
               type="number"
