@@ -130,12 +130,8 @@ export default function CoversReport() {
 
     const syncUrl = localStorage.getItem('syncUrl')
     if (syncUrl) {
-      fetch(syncUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(reportData),
-      }).catch(() => {})
+      const params = new URLSearchParams({ data: JSON.stringify(reportData) })
+      fetch(`${syncUrl}?${params}`, { mode: 'no-cors' }).catch(() => {})
     }
 
     setSubmitted(true)
