@@ -1,10 +1,11 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAdmin } from '../AdminContext'
+import { useLang } from '../LangContext'
 
 const NAV_ITEMS = [
   {
     path: '/report',
-    label: 'Report',
+    labelKey: 'report',
     icon: (active) => (
       <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} className="w-6 h-6">
         <path
@@ -16,7 +17,7 @@ const NAV_ITEMS = [
   },
   {
     path: '/maps',
-    label: 'Maps',
+    labelKey: 'maps',
     icon: (active) => (
       <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} className="w-6 h-6">
         <path
@@ -28,7 +29,7 @@ const NAV_ITEMS = [
   },
   {
     path: '/history',
-    label: 'History',
+    labelKey: 'history',
     icon: (active) => (
       <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} className="w-6 h-6">
         <path
@@ -40,7 +41,7 @@ const NAV_ITEMS = [
   },
   {
     path: '/spraying',
-    label: 'Spraying',
+    labelKey: 'spraying',
     adminOnly: true,
     icon: (active) => (
       <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} className="w-6 h-6">
@@ -53,7 +54,7 @@ const NAV_ITEMS = [
   },
   {
     path: '/settings',
-    label: 'Settings',
+    labelKey: 'settings',
     icon: (active) => (
       <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} className="w-6 h-6">
         <path
@@ -70,6 +71,7 @@ export default function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
   const { isAdmin } = useAdmin()
+  const { t } = useLang()
   const visibleItems = NAV_ITEMS.filter(item => !item.adminOnly || isAdmin)
 
   return (
@@ -77,15 +79,16 @@ export default function BottomNav() {
       <div className="flex items-stretch">
         {visibleItems.map((item) => {
           const active = location.pathname === item.path
+          const label = t(item.labelKey)
           return (
             <button
               key={item.path}
               className={`nav-item ${active ? 'active' : ''}`}
               onClick={() => navigate(item.path)}
-              aria-label={item.label}
+              aria-label={label}
             >
               {item.icon(active)}
-              <span>{item.label}</span>
+              <span>{label}</span>
             </button>
           )
         })}

@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import * as XLSX from 'xlsx'
 import BottomNav from '../components/BottomNav'
 import LockButton from '../components/LockButton'
 import { useAdmin } from '../AdminContext'
+import { useLang } from '../LangContext'
 
 const VARIETY_TABS = [
-  { id: '089',     label: '089'      },
-  { id: '208',     label: '208'      },
-  { id: '318',     label: '318'      },
-  { id: '323A',    label: '323A'     },
-  { id: '337',     label: '337'      },
-  { id: '2088S',   label: '2088S'    },
-  { id: 'rawdata', label: 'Raw Data' },
+  { id: '089',     label: '089'         },
+  { id: '208',     label: '208'         },
+  { id: '318',     label: '318'         },
+  { id: '323A',    label: '323A'        },
+  { id: '337',     label: '337'         },
+  { id: '2088S',   label: '2088S'       },
+  { id: 'rawdata', labelKey: 'rawData'  },
 ]
 
 function saveSubmissions(data) {
@@ -21,12 +22,22 @@ function saveSubmissions(data) {
 export default function History() {
   const [activeTab, setActiveTab] = useState('089')
   const { isAdmin } = useAdmin()
+  const { t } = useLang()
   const [submissions, setSubmissions] = useState(() =>
     JSON.parse(localStorage.getItem('submissions') || '[]')
   )
   const [editingKey, setEditingKey] = useState(null) // 'sIdx-eIdx'
   const [editValues, setEditValues] = useState({})
   const [viewingPhotos, setViewingPhotos] = useState(null) // array of photos
+
+  useEffect(() => {
+    const syncUrl = localStorage.getItem('syncUrl')
+    if (!syncUrl) return
+    fetch(syncUrl)
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setSubmissions(data) })
+      .catch(() => {})
+  }, [])
 
   return (
     <div className="app-shell">
@@ -35,7 +46,7 @@ export default function History() {
           <path strokeLinecap="round" strokeLinejoin="round"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span className="font-bold text-lg">History</span>
+        <span className="font-bold text-lg">{t('history')}</span>
         <LockButton />
       </header>
 
@@ -51,7 +62,7 @@ export default function History() {
                 : 'border-transparent text-slate-400'
             }`}
           >
-            {tab.label}
+            {tab.labelKey ? t(tab.labelKey) : tab.label}
           </button>
         ))}
       </div>
@@ -61,7 +72,7 @@ export default function History() {
           if (submissions.length === 0) return (
             <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
               <div className="text-6xl">📋</div>
-              <p className="text-slate-400 text-sm">No submissions yet.</p>
+              <p className="text-slate-400 text-sm">{t('noSubmissions')}</p>
             </div>
           )
 
@@ -99,7 +110,7 @@ export default function History() {
           return (
             <div className="card" style={{ overflowX: 'auto' }}>
               <div className="flex items-center justify-between mb-4">
-                <p className="section-title">Raw Submissions</p>
+                <p className="section-title">{t('rawSubmissions')}</p>
                 {isAdmin && (
                   <button
                     onClick={() => {
@@ -123,19 +134,19 @@ export default function History() {
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
                     </svg>
-                    Export Excel
+                    {t('exportExcel')}
                   </button>
                 )}
               </div>
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wide">
-                    <th className="text-left py-2 pr-3">Date</th>
-                    <th className="text-left py-2 pr-3">Time</th>
-                    <th className="text-left py-2 pr-3">Employee</th>
-                    <th className="text-left py-2 pr-3">Variety</th>
-                    <th className="text-right py-2 pr-3">Line</th>
-                    <th className="text-right py-2 pr-3">Pollinations</th>
+                    <th className="text-left py-2 pr-3">{t('date')}</th>
+                    <th className="text-left py-2 pr-3">{t('time')}</th>
+                    <th className="text-left py-2 pr-3">{t('employee')}</th>
+                    <th className="text-left py-2 pr-3">{t('variety')}</th>
+                    <th className="text-right py-2 pr-3">{t('line')}</th>
+                    <th className="text-right py-2 pr-3">{t('pollinations')}</th>
                     <th className="py-2"></th>
                     {isAdmin && <th className="py-2"></th>}
                   </tr>
@@ -158,8 +169,8 @@ export default function History() {
                             <td className="py-1 pr-3 text-right"><input className="field-input py-1 px-2 text-sm w-20 text-right" value={editValues.pollinations} onChange={ev => setEditValues(v => ({ ...v, pollinations: ev.target.value }))} /></td>
                             <td className="py-1 pr-2"></td>
                             <td className="py-1 flex gap-1">
-                              <button onClick={() => saveEdit(sIdx, eIdx)} className="px-2 py-1 rounded bg-primary-600 text-white text-xs">Save</button>
-                              <button onClick={() => setEditingKey(null)} className="px-2 py-1 rounded bg-slate-200 text-slate-600 text-xs">Cancel</button>
+                              <button onClick={() => saveEdit(sIdx, eIdx)} className="px-2 py-1 rounded bg-primary-600 text-white text-xs">{t('save')}</button>
+                              <button onClick={() => setEditingKey(null)} className="px-2 py-1 rounded bg-slate-200 text-slate-600 text-xs">{t('cancel')}</button>
                             </td>
                           </>
                         ) : (
@@ -202,9 +213,9 @@ export default function History() {
         })() : (
           <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
             <div className="text-6xl">📋</div>
-            <h2 className="text-xl font-bold text-slate-700">Coming Soon</h2>
+            <h2 className="text-xl font-bold text-slate-700">{t('comingSoon')}</h2>
             <p className="text-slate-400 text-sm max-w-xs">
-              History for variety {activeTab} will appear here in a future update.
+              {t('historyForVariety')} {activeTab} {t('historyComingSoonDesc')}
             </p>
           </div>
         )}
@@ -217,7 +228,7 @@ export default function History() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setViewingPhotos(null)}>
           <div className="bg-white rounded-2xl p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-3">
-              <p className="font-semibold text-slate-800">Photos ({viewingPhotos.length})</p>
+              <p className="font-semibold text-slate-800">{t('photos')} ({viewingPhotos.length})</p>
               <button onClick={() => setViewingPhotos(null)} className="text-slate-400 hover:text-slate-600">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

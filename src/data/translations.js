@@ -1,0 +1,157 @@
+export const translations = {
+  en: {
+    // Nav
+    report: 'Report',
+    maps: 'Maps',
+    history: 'History',
+    spraying: 'Spraying',
+    settings: 'Settings',
+
+    // PollinationsReport
+    pollinationsReport: 'Pollinations Report',
+    employeeInfo: 'Employee Info',
+    employeeName: 'Employee Name',
+    selectEmployee: 'Select employee...',
+    addNewName: '+ Add new name...',
+    date: 'Date',
+    autoFilledToday: 'Auto-filled to today',
+    pollinationData: 'Pollination Data',
+    photos: 'Photos',
+    submitReport: 'Submit Report',
+    pleaseSelectName: 'Please select your name',
+    pleaseFillRequired: 'Please fill in all required fields above',
+    reportComplete: 'Report Complete!',
+    submittedSuccessfully: 'Your report has been submitted successfully.',
+    summary: 'Summary',
+    employee: 'Employee',
+    colorEntries: 'Color entries',
+    totalPollinations: 'Total pollinations',
+    startNewReport: 'Start New Report',
+    addToHomeScreen: 'Add to Home Screen',
+    installStep1: '1. Tap the ⋮ menu in Chrome',
+    installStep2: '2. Tap "Add to Home screen"',
+    gotIt: 'Got it',
+    typeNewName: 'Type new name...',
+    add: 'Add',
+
+    // ColorEntry
+    variety: 'Variety',
+    line: 'Line',
+    pollinations: 'Pollinations',
+    entry: 'Entry',
+    select: 'Select...',
+    required: 'Required',
+    mustBeNonNeg: 'Must be ≥ 0',
+
+    // PhotoUpload
+    camera: 'Camera',
+    gallery: 'Gallery',
+    captionOptional: 'Caption (optional)',
+    describePhoto: 'Describe this photo...',
+
+    // History
+    rawData: 'Raw Data',
+    rawSubmissions: 'Raw Submissions',
+    exportExcel: 'Export Excel',
+    time: 'Time',
+    noSubmissions: 'No submissions yet.',
+    comingSoon: 'Coming Soon',
+    historyForVariety: 'History for variety',
+    historyComingSoonDesc: 'will appear here in a future update.',
+    save: 'Save',
+    cancel: 'Cancel',
+
+    // SprayingFertilizing
+    sprayingFertilizing: 'Spraying & Fertilizing',
+    sprayingComingSoonDesc: 'Spraying and fertilizing records will appear here in a future update.',
+
+    // Settings
+    languageLabel: 'Language',
+    english: 'English',
+    thai: 'ภาษาไทย',
+    syncSection: 'Cloud Sync',
+    syncUrlLabel: 'Google Apps Script URL',
+    syncUrlPlaceholder: 'Paste deployment URL...',
+    syncUrlHint: 'Reports will sync across all devices',
+    syncUrlSaved: 'Saved',
+    syncUrlClear: 'Clear',
+  },
+
+  th: {
+    // Nav
+    report: 'รายงาน',
+    maps: 'แผนที่',
+    history: 'ประวัติ',
+    spraying: 'ฉีดพ่น',
+    settings: 'ตั้งค่า',
+
+    // PollinationsReport
+    pollinationsReport: 'รายงานการผสมเกสร',
+    employeeInfo: 'ข้อมูลพนักงาน',
+    employeeName: 'ชื่อพนักงาน',
+    selectEmployee: 'เลือกพนักงาน...',
+    addNewName: '+ เพิ่มชื่อใหม่...',
+    date: 'วันที่',
+    autoFilledToday: 'กรอกวันที่ปัจจุบันอัตโนมัติ',
+    pollinationData: 'ข้อมูลการผสมเกสร',
+    photos: 'รูปภาพ',
+    submitReport: 'ส่งรายงาน',
+    pleaseSelectName: 'กรุณาเลือกชื่อของคุณ',
+    pleaseFillRequired: 'กรุณากรอกข้อมูลที่จำเป็นทั้งหมดด้านบน',
+    reportComplete: 'รายงานสมบูรณ์!',
+    submittedSuccessfully: 'ส่งรายงานสำเร็จแล้ว',
+    summary: 'สรุป',
+    employee: 'พนักงาน',
+    colorEntries: 'รายการ',
+    totalPollinations: 'การผสมเกสรทั้งหมด',
+    startNewReport: 'เริ่มรายงานใหม่',
+    addToHomeScreen: 'เพิ่มไปยังหน้าจอหลัก',
+    installStep1: '1. แตะเมนู ⋮ ใน Chrome',
+    installStep2: '2. แตะ "เพิ่มไปยังหน้าจอหลัก"',
+    gotIt: 'เข้าใจแล้ว',
+    typeNewName: 'พิมพ์ชื่อใหม่...',
+    add: 'เพิ่ม',
+
+    // ColorEntry
+    variety: 'พันธุ์',
+    line: 'แถว',
+    pollinations: 'การผสมเกสร',
+    entry: 'รายการที่',
+    select: 'เลือก...',
+    required: 'จำเป็น',
+    mustBeNonNeg: 'ต้องเป็น ≥ 0',
+
+    // PhotoUpload
+    camera: 'กล้อง',
+    gallery: 'แกลเลอรี่',
+    captionOptional: 'คำบรรยาย (ไม่บังคับ)',
+    describePhoto: 'อธิบายรูปภาพนี้...',
+
+    // History
+    rawData: 'ข้อมูลดิบ',
+    rawSubmissions: 'ข้อมูลการส่ง',
+    exportExcel: 'ส่งออก Excel',
+    time: 'เวลา',
+    noSubmissions: 'ยังไม่มีข้อมูล',
+    comingSoon: 'เร็วๆ นี้',
+    historyForVariety: 'ประวัติสำหรับพันธุ์',
+    historyComingSoonDesc: 'จะปรากฏที่นี่ในการอัปเดตครั้งถัดไป',
+    save: 'บันทึก',
+    cancel: 'ยกเลิก',
+
+    // SprayingFertilizing
+    sprayingFertilizing: 'ฉีดพ่นและใส่ปุ๋ย',
+    sprayingComingSoonDesc: 'บันทึกการฉีดพ่นและใส่ปุ๋ยจะปรากฏที่นี่ในการอัปเดตครั้งถัดไป',
+
+    // Settings
+    languageLabel: 'ภาษา',
+    english: 'English',
+    thai: 'ภาษาไทย',
+    syncSection: 'ซิงค์ข้อมูล',
+    syncUrlLabel: 'Google Apps Script URL',
+    syncUrlPlaceholder: 'วางลิงก์...',
+    syncUrlHint: 'รายงานจะซิงค์กับทุกอุปกรณ์',
+    syncUrlSaved: 'บันทึกแล้ว',
+    syncUrlClear: 'ลบ',
+  },
+}

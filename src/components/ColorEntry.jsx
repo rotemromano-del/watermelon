@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { formatParent } from '../data/varieties'
 import { getFemaleBedIds } from '../data/fieldMaps'
+import { useLang } from '../LangContext'
 
 const COLORS = [
   'Yellow',
@@ -33,7 +34,7 @@ const COLOR_STYLE = {
   Green:  { bg: '#4ADE80', text: '#14532D' },
 }
 
-function ColorPicker({ value, onChange, hasError }) {
+function ColorPicker({ value, onChange, hasError, t }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -60,7 +61,7 @@ function ColorPicker({ value, onChange, hasError }) {
         {selectedLabel ? (
           <span className="font-medium">{selectedLabel}</span>
         ) : (
-          <span className="text-slate-400">Select...</span>
+          <span className="text-slate-400">{t('select')}</span>
         )}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
           className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none"
@@ -93,6 +94,7 @@ function ColorPicker({ value, onChange, hasError }) {
 }
 
 export default function ColorEntry({ entry, index, totalEntries, errors, onChange, onRemove }) {
+  const { t } = useLang()
   const handleChange = (field, value) => {
     if (field === 'color') {
       onChange({ ...entry, color: value, varietyNumber: COLOR_VARIETY[value] ?? '' })
@@ -106,7 +108,7 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
       {/* Entry header */}
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-bold text-primary-700 uppercase tracking-wider">
-          Entry {index + 1}
+          {t('entry')} {index + 1}
         </span>
         {totalEntries > 1 && (
           <button
@@ -127,12 +129,13 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
         {/* Single variety picker (full width) */}
         <div>
           <label className="field-label">
-            Variety <span className="text-red-400">*</span>
+            {t('variety')} <span className="text-red-400">*</span>
           </label>
           <ColorPicker
             value={entry.color}
             onChange={(val) => handleChange('color', val)}
             hasError={!!errors?.color}
+            t={t}
           />
           {errors?.color && <p className="error-text">{errors.color}</p>}
         </div>
@@ -141,7 +144,7 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="field-label">
-              Line <span className="text-red-400">*</span>
+              {t('line')} <span className="text-red-400">*</span>
             </label>
             {(() => {
               const varietyNo = COLOR_VARIETY[entry.color]
@@ -153,7 +156,7 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
                     onChange={(e) => handleChange('lines', e.target.value)}
                     className={`field-input pr-10 ${errors?.lines ? 'border-red-400 ring-1 ring-red-400' : ''}`}
                   >
-                    <option value="">Select...</option>
+                    <option value="">{t('select')}</option>
                     {bedIds.map(id => (
                       <option key={id} value={id}>{id}</option>
                     ))}
@@ -180,7 +183,7 @@ export default function ColorEntry({ entry, index, totalEntries, errors, onChang
 
           <div>
             <label className="field-label">
-              Pollinations <span className="text-red-400">*</span>
+              {t('pollinations')} <span className="text-red-400">*</span>
             </label>
             <input
               type="number"

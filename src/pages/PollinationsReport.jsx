@@ -3,6 +3,7 @@ import BottomNav from '../components/BottomNav'
 import LockButton from '../components/LockButton'
 import ColorEntry from '../components/ColorEntry'
 import PhotoUpload from '../components/PhotoUpload'
+import { useLang } from '../LangContext'
 
 const EMPLOYEES = [
   'Adul',
@@ -47,6 +48,7 @@ function buildInitialState() {
 }
 
 export default function PollinationsReport() {
+  const { t } = useLang()
   const installPromptRef = useRef(null)
   const [showInstallGuide, setShowInstallGuide] = useState(false)
 
@@ -81,15 +83,15 @@ export default function PollinationsReport() {
   function validate() {
     const errs = {}
 
-    if (!form.employeeName) errs.employeeName = 'Please select your name'
+    if (!form.employeeName) errs.employeeName = t('pleaseSelectName')
 
     const entryErrors = form.colorEntries.map((e) => {
       const ee = {}
-      if (!e.color) ee.color = 'Required'
-      if (e.lines === '' || e.lines === null) ee.lines = 'Required'
-      else if (Number(e.lines) < 0) ee.lines = 'Must be ≥ 0'
-      if (e.pollinations === '' || e.pollinations === null) ee.pollinations = 'Required'
-      else if (Number(e.pollinations) < 0) ee.pollinations = 'Must be ≥ 0'
+      if (!e.color) ee.color = t('required')
+      if (e.lines === '' || e.lines === null) ee.lines = t('required')
+      else if (Number(e.lines) < 0) ee.lines = t('mustBeNonNeg')
+      if (e.pollinations === '' || e.pollinations === null) ee.pollinations = t('required')
+      else if (Number(e.pollinations) < 0) ee.pollinations = t('mustBeNonNeg')
       return Object.keys(ee).length ? ee : null
     })
 
@@ -160,6 +162,17 @@ export default function PollinationsReport() {
     const existing = JSON.parse(localStorage.getItem('submissions') || '[]')
     localStorage.setItem('submissions', JSON.stringify([...existing, reportData]))
 
+    const syncUrl = localStorage.getItem('syncUrl')
+    if (syncUrl) {
+      const { photos: _p, ...dataWithoutPhotos } = reportData
+      fetch(syncUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(dataWithoutPhotos),
+      }).catch(() => {})
+    }
+
     setSubmitted(true)
   }
 
@@ -183,7 +196,7 @@ export default function PollinationsReport() {
             />
             <circle cx="12" cy="12" r="3" />
           </svg>
-          <span className="font-bold text-lg tracking-wide">Pollinations Report</span>
+          <span className="font-bold text-lg tracking-wide">{t('pollinationsReport')}</span>
           <LockButton />
         </header>
 
@@ -191,30 +204,30 @@ export default function PollinationsReport() {
           <div className="text-8xl animate-bounce">👍</div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">Report Complete!</h2>
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">{t('reportComplete')}</h2>
             <p className="text-slate-500 text-base">
-              Your report has been submitted successfully.
+              {t('submittedSuccessfully')}
             </p>
           </div>
 
           {/* Summary */}
           <div className="card w-full text-left">
-            <p className="section-title">Summary</p>
+            <p className="section-title">{t('summary')}</p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-slate-500">Employee</span>
+                <span className="text-slate-500">{t('employee')}</span>
                 <span className="font-semibold text-slate-800">{form.employeeName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Date</span>
+                <span className="text-slate-500">{t('date')}</span>
                 <span className="font-semibold text-slate-800">{form.date}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Color entries</span>
+                <span className="text-slate-500">{t('colorEntries')}</span>
                 <span className="font-semibold text-slate-800">{form.colorEntries.length}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Total pollinations</span>
+                <span className="text-slate-500">{t('totalPollinations')}</span>
                 <span className="font-semibold text-primary-700">
                   {form.colorEntries.reduce((sum, e) => sum + Number(e.pollinations || 0), 0).toLocaleString()}
                 </span>
@@ -226,7 +239,7 @@ export default function PollinationsReport() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            Start New Report
+            {t('startNewReport')}
           </button>
         </main>
 
@@ -247,7 +260,7 @@ export default function PollinationsReport() {
           <circle cx="12" cy="12" r="3" />
         </svg>
         <div className="flex-1">
-          <p className="font-bold text-base leading-tight">Pollinations Report</p>
+          <p className="font-bold text-base leading-tight">{t('pollinationsReport')}</p>
           <p className="text-primary-200 text-xs">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
         </div>
         <button
@@ -268,12 +281,12 @@ export default function PollinationsReport() {
 
           {/* ── Section: Employee Info ─────────────────────────────────── */}
           <div className="card">
-            <p className="section-title">Employee Info</p>
+            <p className="section-title">{t('employeeInfo')}</p>
 
             {/* Employee Name */}
             <div className="mb-4">
               <label className="field-label" htmlFor="employee-name">
-                Employee Name <span className="text-red-400">*</span>
+                {t('employeeName')} <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <select
@@ -293,11 +306,11 @@ export default function PollinationsReport() {
                   }}
                   className={`field-input pr-10 ${errors.employeeName ? 'border-red-400 ring-1 ring-red-400' : ''}`}
                 >
-                  <option value="">Select employee...</option>
+                  <option value="">{t('selectEmployee')}</option>
                   {employees.map((name) => (
                     <option key={name} value={name}>{name}</option>
                   ))}
-                  <option value="__new__">+ Add new name...</option>
+                  <option value="__new__">{t('addNewName')}</option>
                 </select>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none">
@@ -333,7 +346,7 @@ export default function PollinationsReport() {
                         setNewNameInput('')
                       }
                     }}
-                    placeholder="Type new name..."
+                    placeholder={t('typeNewName')}
                     className="field-input flex-1"
                   />
                   <button
@@ -353,7 +366,7 @@ export default function PollinationsReport() {
                     className="btn-primary px-4 py-3 w-auto rounded-xl text-sm"
                     style={{ minHeight: 52 }}
                   >
-                    Add
+                    {t('add')}
                   </button>
                   <button
                     type="button"
@@ -371,7 +384,7 @@ export default function PollinationsReport() {
 
             {/* Date */}
             <div>
-              <label className="field-label" htmlFor="date">Date</label>
+              <label className="field-label" htmlFor="date">{t('date')}</label>
               <input
                 id="date"
                 type="date"
@@ -379,13 +392,13 @@ export default function PollinationsReport() {
                 disabled
                 className="field-input"
               />
-              <p className="text-xs text-slate-400 mt-1">Auto-filled to today</p>
+              <p className="text-xs text-slate-400 mt-1">{t('autoFilledToday')}</p>
             </div>
           </div>
 
           {/* ── Section: Color Entries ────────────────────────────────── */}
           <div className="card">
-            <p className="section-title">Pollination Data</p>
+            <p className="section-title">{t('pollinationData')}</p>
 
             <div className="flex flex-col gap-4">
               {form.colorEntries.map((entry, index) => (
@@ -405,7 +418,7 @@ export default function PollinationsReport() {
 
           {/* ── Section: Photos ───────────────────────────────────────── */}
           <div className="card">
-            <p className="section-title">Photos</p>
+            <p className="section-title">{t('photos')}</p>
             <PhotoUpload
               photos={form.photos}
               onChange={(photos) => setForm((f) => ({ ...f, photos }))}
@@ -417,13 +430,13 @@ export default function PollinationsReport() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Submit Report
+            {t('submitReport')}
           </button>
 
           {/* General error hint */}
           {Object.keys(errors).length > 0 && (
             <p className="text-center text-red-500 text-sm mt-3 font-medium">
-              Please fill in all required fields above
+              {t('pleaseFillRequired')}
             </p>
           )}
 
@@ -436,14 +449,14 @@ export default function PollinationsReport() {
       {showInstallGuide && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center p-4" onClick={() => setShowInstallGuide(false)}>
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
-            <p className="font-bold text-lg mb-3 text-slate-800">Add to Home Screen</p>
-            <p className="text-slate-600 text-sm mb-2">1. Tap the <strong>⋮</strong> menu in Chrome</p>
-            <p className="text-slate-600 text-sm mb-4">2. Tap <strong>"Add to Home screen"</strong></p>
+            <p className="font-bold text-lg mb-3 text-slate-800">{t('addToHomeScreen')}</p>
+            <p className="text-slate-600 text-sm mb-2">{t('installStep1')}</p>
+            <p className="text-slate-600 text-sm mb-4">{t('installStep2')}</p>
             <button
               className="w-full bg-primary-600 text-white rounded-xl py-3 font-semibold"
               onClick={() => setShowInstallGuide(false)}
             >
-              Got it
+              {t('gotIt')}
             </button>
           </div>
         </div>

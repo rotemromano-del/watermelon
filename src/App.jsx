@@ -5,9 +5,11 @@ import Maps from './pages/Maps'
 import Settings from './pages/Settings'
 import SprayingFertilizing from './pages/SprayingFertilizing'
 import { AdminProvider } from './AdminContext'
+import { LangProvider } from './LangContext'
 
 export default function App() {
   return (
+    <LangProvider>
     <AdminProvider>
     <Routes>
       <Route path="/" element={<Navigate to="/report" replace />} />
@@ -18,5 +20,6 @@ export default function App() {
       <Route path="/spraying" element={<SprayingFertilizing />} />
     </Routes>
     </AdminProvider>
+    </LangProvider>
   )
 }
