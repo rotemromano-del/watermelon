@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import BottomNav from '../components/BottomNav'
 import FieldMap from '../components/FieldMap'
-import { ABEND_FEMALE_MAP, MALES_700_MAP } from '../data/fieldMaps'
+import { ABEND_FEMALE_MAP, MALES_700_MAP, FIFTY_WEST_FEMALE_MAP } from '../data/fieldMaps'
 import LockButton from '../components/LockButton'
 import { useAdmin } from '../AdminContext'
 
@@ -104,6 +104,26 @@ export default function Maps() {
             <h2 className="text-xl font-bold text-slate-700">Coming Soon</h2>
             <p className="text-slate-400 text-sm max-w-xs">The 600 Males field map will appear here in a future update.</p>
           </div>
+        ) : activeTab === '50' ? (
+          <div className="flex flex-col gap-4">
+            <div className="card">
+              <div className="flex items-center gap-3 mb-4">
+                <p className="section-title">50 West</p>
+                {/* North arrow pointing up (south at bottom) */}
+                <svg width="36" height="56" viewBox="0 0 36 56">
+                  <polygon points="18,4 4,38 18,38" fill="#1e293b" />
+                  <polygon points="18,4 32,38 18,38" fill="white" stroke="#1e293b" strokeWidth="1" />
+                  <text x="18" y="52" textAnchor="middle" fontSize="11" fontFamily="system-ui, sans-serif" fontWeight="700" fill="#1e293b">N</text>
+                </svg>
+              </div>
+              <FieldMap map={FIFTY_WEST_FEMALE_MAP} />
+            </div>
+            <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
+              <div className="text-6xl">🗺️</div>
+              <h2 className="text-xl font-bold text-slate-700">50 East — Coming Soon</h2>
+              <p className="text-slate-400 text-sm max-w-xs">The 50 East field map will appear here in a future update.</p>
+            </div>
+          </div>
         ) : activeTab === 'data' ? (
           <div className="card">
             <p className="section-title mb-4">Area by Variety</p>
@@ -140,12 +160,6 @@ export default function Maps() {
                 </tbody>
               </table>
             </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
-            <div className="text-6xl">🗺️</div>
-            <h2 className="text-xl font-bold text-slate-700">Coming Soon</h2>
-            <p className="text-slate-400 text-sm max-w-xs">The 50 Female field map will appear here in a future update.</p>
           </div>
         )}
       </main>

@@ -133,10 +133,62 @@ export const ABEND_FEMALE_MAP = {
   ],
 }
 
+export const FIFTY_WEST_FEMALE_MAP = {
+  name: '50 West',
+  totalLengthM: 270,
+  lengthLong: '270m',
+  area: '9.3 dunam',
+  bedWidthCm: 192,
+  bedGroups: [
+    // cols leftmost (west) — beds 18–17
+    {
+      id: 'g4',
+      beds: [
+        { id: 18, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 17, lengthM: 120, color: '#A855F8', variety: '208', varietyNo: '2048' },
+      ],
+    },
+    // beds 16–11
+    {
+      id: 'g3',
+      beds: [
+        { id: 16, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 15, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 14, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 13, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 12, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 11, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+      ],
+    },
+    // beds 10–5
+    {
+      id: 'g2',
+      beds: [
+        { id: 10, lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 9,  lengthM: 270, color: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 8,  lengthM: 215, futureLengthM: 55, color: '#A855F8', futureColor: '#A855F8', variety: '208', varietyNo: '2048' },
+        { id: 7,  lengthM: 270, color: '#FEF08A', variety: '337', varietyNo: '2210' },
+        { id: 6,  lengthM: 270, color: '#FEF08A', variety: '337', varietyNo: '2210' },
+        { id: 5,  lengthM: 20,  color: '#3B82F6', variety: '318', varietyNo: '2177' },
+      ],
+    },
+    // beds 4–1 (rightmost/east)
+    {
+      id: 'g1',
+      beds: [
+        { id: 4, lengthM: 270, color: '#3B82F6', variety: '318', varietyNo: '2177' },
+        { id: 3, lengthM: 270, color: '#3B82F6', variety: '318', varietyNo: '2177' },
+        { id: 2, lengthM: 250, futureLengthM: 20, color: '#3B82F6', variety: '318', varietyNo: '2177' },
+        { id: 1, lengthM: 250, futureLengthM: 20, color: '#3B82F6', variety: '318', varietyNo: '2177' },
+      ],
+    },
+  ],
+}
+
 // Returns sorted bed IDs from female maps that are planted with the given varietyNo
 export function getFemaleBedIds(varietyNo) {
   const ids = []
-  for (const map of [ABEND_FEMALE_MAP]) {
+  for (const map of [ABEND_FEMALE_MAP, FIFTY_WEST_FEMALE_MAP]) {
     for (const group of map.bedGroups) {
       for (const bed of group.beds) {
         if (bed.color && bed.varietyNo === varietyNo) ids.push(bed.id)
