@@ -2,15 +2,16 @@ import { useState } from 'react'
 import BottomNav from '../components/BottomNav'
 import LockButton from '../components/LockButton'
 import { useLang } from '../LangContext'
+import { useAdmin } from '../AdminContext'
 
 export default function Settings() {
   const { lang, setLanguage, t } = useLang()
+  const { isAdmin } = useAdmin()
   const [syncUrl, setSyncUrl] = useState(() => localStorage.getItem('syncUrl') || '')
   const [saved, setSaved] = useState(false)
 
   function handleSave() {
-    const trimmed = syncUrl.trim()
-    localStorage.setItem('syncUrl', trimmed)
+    localStorage.setItem('syncUrl', syncUrl.trim())
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -60,38 +61,40 @@ export default function Settings() {
             </button>
           </div>
         </div>
-      </main>
 
-        <div className="card mt-0">
-          <p className="section-title">{t('syncSection')}</p>
-          <label className="field-label mt-2">{t('syncUrlLabel')}</label>
-          <textarea
-            value={syncUrl}
-            onChange={(e) => { setSyncUrl(e.target.value); setSaved(false) }}
-            placeholder={t('syncUrlPlaceholder')}
-            rows={3}
-            className="field-input text-xs resize-none py-2 mt-1 font-mono"
-          />
-          <p className="text-xs text-slate-400 mt-1">{t('syncUrlHint')}</p>
-          <div className="flex gap-2 mt-3">
-            <button
-              type="button"
-              onClick={handleSave}
-              className="btn-primary flex-1 py-2 text-sm"
-            >
-              {saved ? t('syncUrlSaved') : t('save')}
-            </button>
-            {syncUrl && (
+        {isAdmin && (
+          <div className="card">
+            <p className="section-title">{t('syncSection')}</p>
+            <label className="field-label mt-2">{t('syncUrlLabel')}</label>
+            <textarea
+              value={syncUrl}
+              onChange={(e) => { setSyncUrl(e.target.value); setSaved(false) }}
+              placeholder={t('syncUrlPlaceholder')}
+              rows={3}
+              className="field-input text-xs resize-none py-2 mt-1 font-mono"
+            />
+            <p className="text-xs text-slate-400 mt-1">{t('syncUrlHint')}</p>
+            <div className="flex gap-2 mt-3">
               <button
                 type="button"
-                onClick={handleClear}
-                className="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-semibold"
+                onClick={handleSave}
+                className="btn-primary flex-1 py-2 text-sm"
               >
-                {t('syncUrlClear')}
+                {saved ? t('syncUrlSaved') : t('save')}
               </button>
-            )}
+              {syncUrl && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-semibold"
+                >
+                  {t('syncUrlClear')}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+      </main>
 
       <BottomNav />
     </div>
