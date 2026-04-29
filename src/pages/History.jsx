@@ -95,6 +95,15 @@ export default function History() {
             </div>
           )
 
+          function deleteCoversEntry(si, eIdx) {
+            const updated = coversSubmissions.map((s, i) => i !== si ? s : {
+              ...s,
+              colorEntries: s.colorEntries.filter((_, ei) => ei !== eIdx),
+            }).filter(s => s.colorEntries.length > 0)
+            setCoversSubmissions(updated)
+            localStorage.setItem('coversSubmissions', JSON.stringify(updated))
+          }
+
           function saveCoversEdit(si, eIdx) {
             const updated = coversSubmissions.map((s, i) => i !== si ? s : {
               ...s,
@@ -175,11 +184,18 @@ export default function History() {
                                       </div>
                                       <span className="font-bold text-blue-700">{e.pollinations}</span>
                                       {isAdmin && (
-                                        <button onClick={() => { setCoversEditingKey(ek); setCoversEditValues({ variety: e.color, line: e.lines, pollinations: e.pollinations }) }} className="text-blue-400 hover:text-blue-600">
-                                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H8v-2.414a2 2 0 01.586-1.414z" />
-                                          </svg>
-                                        </button>
+                                        <>
+                                          <button onClick={() => { setCoversEditingKey(ek); setCoversEditValues({ variety: e.color, line: e.lines, pollinations: e.pollinations }) }} className="text-blue-400 hover:text-blue-600">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H8v-2.414a2 2 0 01.586-1.414z" />
+                                            </svg>
+                                          </button>
+                                          <button onClick={() => deleteCoversEntry(s._si, j)} className="text-red-400 hover:text-red-600">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7H5m4 0V5a1 1 0 011-1h4a1 1 0 011 1v2m-9 4l1 8h8l1-8" />
+                                            </svg>
+                                          </button>
+                                        </>
                                       )}
                                     </>
                                   )}
