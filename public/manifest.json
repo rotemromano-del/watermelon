@@ -3,7 +3,7 @@
   "short_name": "Pollinations",
   "description": "Watermelon pollination reporting app",
   "start_url": "/",
-  "display": "browser",
+  "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#16a34a",
   "orientation": "portrait",

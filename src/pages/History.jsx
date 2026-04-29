@@ -28,7 +28,6 @@ export default function History() {
   )
   const [editingKey, setEditingKey] = useState(null) // 'sIdx-eIdx'
   const [editValues, setEditValues] = useState({})
-  const [viewingPhotos, setViewingPhotos] = useState(null) // array of photos
 
   useEffect(() => {
     const syncUrl = localStorage.getItem('syncUrl')
@@ -178,15 +177,7 @@ export default function History() {
                             <td className="py-2 pr-3 text-slate-700">{e.color}</td>
                             <td className="py-2 pr-3 text-right text-slate-700">{e.lines}</td>
                             <td className="py-2 pr-3 text-right font-semibold text-primary-700">{e.pollinations}</td>
-                            <td className="py-2 pr-2">
-                              {s.photos?.length > 0 && eIdx === 0 && (
-                                <button onClick={() => setViewingPhotos(s.photos)} className="text-slate-400 hover:text-primary-600" title="View photos">
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                  </svg>
-                                </button>
-                              )}
-                            </td>
+                            <td className="py-2 pr-2"></td>
                             {isAdmin && (
                               <td className="py-2 flex gap-2">
                                 <button onClick={() => startEdit(sIdx, eIdx, e, s.employeeName)} className="text-blue-500 hover:text-blue-700" title="Edit">
@@ -223,29 +214,6 @@ export default function History() {
 
       <BottomNav />
 
-      {/* Photo viewer modal */}
-      {viewingPhotos && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setViewingPhotos(null)}>
-          <div className="bg-white rounded-2xl p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-3">
-              <p className="font-semibold text-slate-800">{t('photos')} ({viewingPhotos.length})</p>
-              <button onClick={() => setViewingPhotos(null)} className="text-slate-400 hover:text-slate-600">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="flex flex-col gap-3">
-              {viewingPhotos.map((p, i) => (
-                <div key={i}>
-                  <img src={p.dataUrl} alt={p.fileName} className="w-full rounded-xl object-cover" />
-                  {p.description && <p className="text-xs text-slate-500 mt-1">{p.description}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

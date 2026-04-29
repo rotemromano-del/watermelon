@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import BottomNav from '../components/BottomNav'
 import LockButton from '../components/LockButton'
 import ColorEntry from '../components/ColorEntry'
-import PhotoUpload from '../components/PhotoUpload'
 import { useLang } from '../LangContext'
 
 const EMPLOYEES = [
@@ -43,7 +42,6 @@ function buildInitialState() {
     employeeName: localStorage.getItem('lastEmployeeName') || '',
     date: getTodayDate(),
     colorEntries: [createColorEntry()],
-    photos: [],
   }
 }
 
@@ -125,7 +123,7 @@ export default function PollinationsReport() {
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     const errs = validate()
 
@@ -135,15 +133,6 @@ export default function PollinationsReport() {
       return
     }
 
-    // Convert photos to base64 for persistence
-    const photosWithData = await Promise.all(form.photos.map((p) =>
-      new Promise((resolve) => {
-        const reader = new FileReader()
-        reader.onload = () => resolve({ dataUrl: reader.result, description: p.description, fileName: p.file.name })
-        reader.readAsDataURL(p.file)
-      })
-    ))
-
     const reportData = {
       employeeName: form.employeeName,
       date: form.date,
@@ -152,24 +141,22 @@ export default function PollinationsReport() {
         lines: Number(e.lines),
         pollinations: Number(e.pollinations),
       })),
-      photos: photosWithData,
       submittedAt: new Date().toISOString(),
     }
 
     console.log('=== POLLINATIONS REPORT SUBMITTED ===')
-    console.log(JSON.stringify({ ...reportData, photos: `[${photosWithData.length} photos]` }, null, 2))
+    console.log(JSON.stringify(reportData, null, 2))
 
     const existing = JSON.parse(localStorage.getItem('submissions') || '[]')
     localStorage.setItem('submissions', JSON.stringify([...existing, reportData]))
 
     const syncUrl = localStorage.getItem('syncUrl')
     if (syncUrl) {
-      const { photos: _p, ...dataWithoutPhotos } = reportData
       fetch(syncUrl, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(dataWithoutPhotos),
+        body: JSON.stringify(reportData),
       }).catch(() => {})
     }
 
@@ -177,8 +164,6 @@ export default function PollinationsReport() {
   }
 
   const handleNewReport = () => {
-    // Revoke old photo URLs
-    form.photos.forEach((p) => URL.revokeObjectURL(p.preview))
     setForm(buildInitialState())
     setErrors({})
     setSubmitted(false)
@@ -226,6 +211,7 @@ export default function PollinationsReport() {
                 <span className="text-slate-500">{t('colorEntries')}</span>
                 <span className="font-semibold text-slate-800">{form.colorEntries.length}</span>
               </div>
+
               <div className="flex justify-between">
                 <span className="text-slate-500">{t('totalPollinations')}</span>
                 <span className="font-semibold text-primary-700">
@@ -414,15 +400,6 @@ export default function PollinationsReport() {
               ))}
             </div>
 
-          </div>
-
-          {/* ── Section: Photos ───────────────────────────────────────── */}
-          <div className="card">
-            <p className="section-title">{t('photos')}</p>
-            <PhotoUpload
-              photos={form.photos}
-              onChange={(photos) => setForm((f) => ({ ...f, photos }))}
-            />
           </div>
 
           {/* ── Submit ───────────────────────────────────────────────── */}
