@@ -4,6 +4,7 @@ export const translations = {
     report: 'Report',
     maps: 'Maps',
     history: 'History',
+    covers: 'Covers',
     spraying: 'Spraying',
     settings: 'Settings',
 
@@ -82,6 +83,7 @@ export const translations = {
     report: 'รายงาน',
     maps: 'แผนที่',
     history: 'ประวัติ',
+    covers: 'ฝาครอบ',
     spraying: 'ฉีดพ่น',
     settings: 'ตั้งค่า',
 

@@ -40,6 +40,17 @@ const NAV_ITEMS = [
     ),
   },
   {
+    path: '/covers',
+    labelKey: 'covers',
+    icon: (active) => (
+      <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} className="w-6 h-6">
+        <path strokeLinecap="round" strokeLinejoin="round"
+          d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 22V12h6v10" />
+      </svg>
+    ),
+  },
+  {
     path: '/spraying',
     labelKey: 'spraying',
     adminOnly: true,

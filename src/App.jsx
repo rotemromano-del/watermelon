@@ -4,6 +4,7 @@ import History from './pages/History'
 import Maps from './pages/Maps'
 import Settings from './pages/Settings'
 import SprayingFertilizing from './pages/SprayingFertilizing'
+import Covers from './pages/Covers'
 import { AdminProvider } from './AdminContext'
 import { LangProvider } from './LangContext'
 
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="/maps" element={<Maps />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/spraying" element={<SprayingFertilizing />} />
+      <Route path="/covers" element={<Covers />} />
     </Routes>
     </AdminProvider>
     </LangProvider>
