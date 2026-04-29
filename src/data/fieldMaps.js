@@ -74,21 +74,21 @@ export const ABEND_FEMALE_MAP = {
     {
       id: 'g5',
       beds: [
-        { id: 29, lengthM: 355, color: null },
-        { id: 28, lengthM: 355, color: null },
-        { id: 27, lengthM: 355, color: null },
-        { id: 26, lengthM: 355, color: null },
-        { id: 25, lengthM: 355, color: null },
-        { id: 24, lengthM: 355, color: null },
+        { id: 29, lengthM: 355, tooltip: '3050 plants, 06/04/26', color: '#3B82F6', variety: '318', varietyNo: '2106' },
+        { id: 28, lengthM: 355, tooltip: '3050 plants, 06/04/26', color: '#3B82F6', variety: '318', varietyNo: '2106' },
+        { id: 27, lengthM: 355, tooltip: '3050 plants, 06/04/26', color: '#3B82F6', variety: '318', varietyNo: '2106' },
+        { id: 26, lengthM: 185, futureLengthM: 170, tooltip: '3100 plants, 30/03/26', futureTooltip: '3050 plants, 06/04/26', color: '#3B82F6', futureColor: '#3B82F6', variety: '318', varietyNo: '2106' },
+        { id: 25, lengthM: 355, tooltip: '3100 plants, 30/03/26', color: '#3B82F6', variety: '318', varietyNo: '2106' },
+        { id: 24, lengthM: 355, tooltip: '3100 plants, 30/03/26', color: '#3B82F6', variety: '318', varietyNo: '2106' },
       ],
     },
     // cols X–AC
     {
       id: 'g4',
       beds: [
-        { id: 23, lengthM: 355, color: null },
-        { id: 22, lengthM: 355, color: null },
-        { id: 21, lengthM: 20, futureLengthM: 335, tooltip: '6650 plants, 23/03/26', color: '#92400E', variety: 'Brown', varietyNo: '2024' },
+        { id: 23, lengthM: 355, tooltip: '3100 plants, 30/03/26', color: '#3B82F6', variety: '318', varietyNo: '2106' },
+        { id: 22, lengthM: 355, tooltip: '1700 plants, 30/03/26', color: '#92400E', variety: 'Brown', varietyNo: '2024' },
+        { id: 21, lengthM: 20, futureLengthM: 335, tooltip: '6650 plants, 23/03/26', futureTooltip: '1700 plants, 30/03/26', color: '#92400E', futureColor: '#92400E', variety: 'Brown', varietyNo: '2024' },
         { id: 20, lengthM: 355, tooltip: '6650 plants, 23/03/26', color: '#92400E', variety: 'Brown', varietyNo: '2024' },
         { id: 19, lengthM: 355, tooltip: '6650 plants, 23/03/26', color: '#92400E', variety: 'Brown', varietyNo: '2024' },
         { id: 18, lengthM: 355, tooltip: '6650 plants, 23/03/26', color: '#92400E', variety: 'Brown', varietyNo: '2024' },
