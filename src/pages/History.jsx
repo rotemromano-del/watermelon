@@ -12,8 +12,18 @@ const VARIETY_TABS = [
   { id: '323A',    label: '323A'        },
   { id: '337',     label: '337'         },
   { id: '2088S',   label: '2088S'       },
+  { id: 'covers',  labelKey: 'covers'   },
   { id: 'rawdata', labelKey: 'rawData'  },
 ]
+
+const COLOR_STYLE = {
+  Yellow: { bg: '#FEF08A', text: '#713F12' },
+  Purple: { bg: '#A855F8', text: '#ffffff' },
+  Blue:   { bg: '#3B82F6', text: '#ffffff' },
+  Brown:  { bg: '#92400E', text: '#ffffff' },
+  Peach:  { bg: '#FBCBA7', text: '#7C2D12' },
+  Green:  { bg: '#4ADE80', text: '#14532D' },
+}
 
 function saveSubmissions(data) {
   localStorage.setItem('submissions', JSON.stringify(data))
@@ -28,6 +38,10 @@ export default function History() {
   )
   const [editingKey, setEditingKey] = useState(null) // 'sIdx-eIdx'
   const [editValues, setEditValues] = useState({})
+  const [coversSubmissions, setCoversSubmissions] = useState(() =>
+    JSON.parse(localStorage.getItem('coversSubmissions') || '[]')
+  )
+  const [expandedDates, setExpandedDates] = useState(new Set())
 
   useEffect(() => {
     const syncUrl = localStorage.getItem('syncUrl')
@@ -35,6 +49,10 @@ export default function History() {
     fetch(syncUrl)
       .then((r) => r.json())
       .then((data) => { if (Array.isArray(data)) setSubmissions(data) })
+      .catch(() => {})
+    fetch(`${syncUrl}?sheet=Covers`)
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setCoversSubmissions(data) })
       .catch(() => {})
   }, [])
 
@@ -67,7 +85,82 @@ export default function History() {
       </div>
 
       <main className="page-content">
-        {activeTab === 'rawdata' ? (() => {
+        {activeTab === 'covers' ? (() => {
+          if (coversSubmissions.length === 0) return (
+            <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
+              <div className="text-6xl">📋</div>
+              <p className="text-slate-400 text-sm">{t('noCoversYet')}</p>
+            </div>
+          )
+
+          const grouped = {}
+          coversSubmissions.forEach((s) => {
+            if (!grouped[s.date]) grouped[s.date] = []
+            grouped[s.date].push(s)
+          })
+          const sortedDates = Object.keys(grouped).sort((a, b) => b.localeCompare(a))
+
+          return (
+            <div className="card">
+              {sortedDates.map((date, di) => {
+                const daySubs = grouped[date]
+                const total = daySubs.reduce((sum, s) =>
+                  sum + s.colorEntries.reduce((s2, e) => s2 + Number(e.pollinations || 0), 0), 0)
+                const isExpanded = expandedDates.has(date)
+
+                return (
+                  <div key={date} className={di < sortedDates.length - 1 ? 'border-b border-slate-100' : ''}>
+                    <button
+                      onClick={() => setExpandedDates((prev) => {
+                        const next = new Set(prev)
+                        next.has(date) ? next.delete(date) : next.add(date)
+                        return next
+                      })}
+                      className="w-full flex items-center justify-between py-3"
+                    >
+                      <span className="font-semibold text-slate-700">{date}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-blue-600 text-lg">{total.toLocaleString()}</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                          className={`w-4 h-4 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="pb-3 space-y-3">
+                        {daySubs.map((s, i) => (
+                          <div key={i} className="bg-slate-50 rounded-xl p-3">
+                            <div className="flex justify-between text-xs text-slate-500 mb-2">
+                              <span className="font-semibold text-slate-700">{s.employeeName}</span>
+                              <span>{new Date(s.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            {s.colorEntries.map((e, j) => {
+                              const style = COLOR_STYLE[e.color]
+                              return (
+                                <div key={j} className="flex items-center justify-between py-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="px-2 py-0.5 rounded text-xs font-medium"
+                                      style={style ? { backgroundColor: style.bg, color: style.text } : {}}>
+                                      {e.color}
+                                    </span>
+                                    <span className="text-slate-500 text-sm">{t('line')} {e.lines}</span>
+                                  </div>
+                                  <span className="font-bold text-blue-700">{e.pollinations}</span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })() : activeTab === 'rawdata' ? (() => {
           if (submissions.length === 0) return (
             <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
               <div className="text-6xl">📋</div>
@@ -209,7 +302,8 @@ export default function History() {
               {t('historyForVariety')} {activeTab} {t('historyComingSoonDesc')}
             </p>
           </div>
-        )}
+        )
+        }
       </main>
 
       <BottomNav />
