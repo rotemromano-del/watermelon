@@ -42,6 +42,8 @@ export default function History() {
     JSON.parse(localStorage.getItem('coversSubmissions') || '[]')
   )
   const [expandedDates, setExpandedDates] = useState(new Set())
+  const [coversEditingKey, setCoversEditingKey] = useState(null) // 'sIdx-eIdx'
+  const [coversEditValues, setCoversEditValues] = useState({})
 
   useEffect(() => {
     const syncUrl = localStorage.getItem('syncUrl')
@@ -93,10 +95,22 @@ export default function History() {
             </div>
           )
 
+          function saveCoversEdit(si, eIdx) {
+            const updated = coversSubmissions.map((s, i) => i !== si ? s : {
+              ...s,
+              colorEntries: s.colorEntries.map((e, ei) => ei !== eIdx ? e : {
+                ...e, color: coversEditValues.variety, lines: coversEditValues.line, pollinations: coversEditValues.pollinations,
+              }),
+            })
+            setCoversSubmissions(updated)
+            localStorage.setItem('coversSubmissions', JSON.stringify(updated))
+            setCoversEditingKey(null)
+          }
+
           const grouped = {}
-          coversSubmissions.forEach((s) => {
+          coversSubmissions.forEach((s, si) => {
             if (!grouped[s.date]) grouped[s.date] = []
-            grouped[s.date].push(s)
+            grouped[s.date].push({ ...s, _si: si })
           })
           const sortedDates = Object.keys(grouped).sort((a, b) => b.localeCompare(a))
 
@@ -138,16 +152,37 @@ export default function History() {
                             </div>
                             {s.colorEntries.map((e, j) => {
                               const style = COLOR_STYLE[e.color]
+                              const ek = `${s._si}-${j}`
+                              const isEditingThis = coversEditingKey === ek
                               return (
-                                <div key={j} className="flex items-center justify-between py-1">
-                                  <div className="flex items-center gap-2">
-                                    <span className="px-2 py-0.5 rounded text-xs font-medium"
-                                      style={style ? { backgroundColor: style.bg, color: style.text } : {}}>
-                                      {e.color}
-                                    </span>
-                                    <span className="text-slate-500 text-sm">{t('line')} {e.lines}</span>
-                                  </div>
-                                  <span className="font-bold text-blue-700">{e.pollinations}</span>
+                                <div key={j} className="flex items-center justify-between py-1 gap-2">
+                                  {isEditingThis ? (
+                                    <>
+                                      <input className="field-input py-1 px-2 text-sm w-20" value={coversEditValues.variety} onChange={ev => setCoversEditValues(v => ({ ...v, variety: ev.target.value }))} />
+                                      <input className="field-input py-1 px-2 text-sm w-14 text-center" value={coversEditValues.line} onChange={ev => setCoversEditValues(v => ({ ...v, line: ev.target.value }))} />
+                                      <input className="field-input py-1 px-2 text-sm w-16 text-right" value={coversEditValues.pollinations} onChange={ev => setCoversEditValues(v => ({ ...v, pollinations: ev.target.value }))} />
+                                      <button onClick={() => saveCoversEdit(s._si, j)} className="px-2 py-1 rounded bg-blue-600 text-white text-xs">{t('save')}</button>
+                                      <button onClick={() => setCoversEditingKey(null)} className="px-2 py-1 rounded bg-slate-200 text-slate-600 text-xs">{t('cancel')}</button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="flex items-center gap-2 flex-1">
+                                        <span className="px-2 py-0.5 rounded text-xs font-medium"
+                                          style={style ? { backgroundColor: style.bg, color: style.text } : {}}>
+                                          {e.color}
+                                        </span>
+                                        <span className="text-slate-500 text-sm">{t('line')} {e.lines}</span>
+                                      </div>
+                                      <span className="font-bold text-blue-700">{e.pollinations}</span>
+                                      {isAdmin && (
+                                        <button onClick={() => { setCoversEditingKey(ek); setCoversEditValues({ variety: e.color, line: e.lines, pollinations: e.pollinations }) }} className="text-blue-400 hover:text-blue-600">
+                                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H8v-2.414a2 2 0 01.586-1.414z" />
+                                          </svg>
+                                        </button>
+                                      )}
+                                    </>
+                                  )}
                                 </div>
                               )
                             })}
